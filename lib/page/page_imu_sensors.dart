@@ -188,8 +188,10 @@ class IMUPageState extends State<IMUPage> {
                       setState(() {
                         _fileSaved = "File Saved : $path";
                       });
+                      showToast("Saved", true);
                     } else {
                       log("Nothing to Stop");
+                      showToast("Not Started", true);
                     }
                   },
                   child: const Text("Stop"),
@@ -198,7 +200,9 @@ class IMUPageState extends State<IMUPage> {
                   onPressed: () {
                     if (value.isRunning()) {
                       value.increaseCheck();
+                      showToast("Checked", true);
                     }
+                    showToast("Not Started", true);
                   },
                   child: const Text("Check"),
                 ),
@@ -206,6 +210,9 @@ class IMUPageState extends State<IMUPage> {
                   onPressed: () {
                     if (!value.isRunning()) {
                       changeFrequency(context, value);
+                    }
+                    else {
+                      showToast("plz stop to change", true);
                     }
                   },
                   child: const Text("Frequency"),

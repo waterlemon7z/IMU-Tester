@@ -74,9 +74,10 @@ class _RealTimeChartState extends State<RealTimeChart> {
   }
 
   void _updateDataSource(Timer timer) {
-    if(widget.provider.flChartData["${widget.sensorMode}${widget.axis}"] == null) {
-      return;
-    }
+    // if(widget.provider.flChartData["${widget.sensorMode}${widget.axis}"] == null || widget.provider.flChartData["${widget.sensorMode}${widget.axis}"]
+    //     ?.last.y == null) {
+    //   return;
+    // }
     _chartData.add(ChartDataEntity(
         x: _count,
         y: widget.provider.flChartData["${widget.sensorMode}${widget.axis}"]

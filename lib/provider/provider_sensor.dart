@@ -87,6 +87,10 @@ class SensorProvider with ChangeNotifier {
       "magY": List<ChartDataEntity>.empty(growable: true),
       "magZ": List<ChartDataEntity>.empty(growable: true),
     });
+    for(var iter in flChartData.values)
+      {
+        iter.add(ChartDataEntity(x: 1, y : 0));
+      }
     _streamSubscriptions.add(
       gyroscopeEventStream(samplingPeriod: _sensorInterval).listen(
         (GyroscopeEvent event) {
