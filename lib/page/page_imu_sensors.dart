@@ -290,7 +290,7 @@ class IMUPageState extends State<IMUPage> {
                 child: const Text('Confirm'),
                 onPressed: () {
                   setState(() {
-                    if (RegExp(r'0-9').hasMatch(valueText)) {
+                    if (RegExp(r'[0-9]').hasMatch(valueText)) {
                       provider.setFrequency(int.parse(valueText));
                       Navigator.pop(context);
                     } else {
