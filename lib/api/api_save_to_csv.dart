@@ -9,18 +9,20 @@ import '../entity/entity_saved_values.dart';
 Future<void> csvOutput(List<SensorValue> valueList, String path) async {
   List<List<String>> rows = List<List<String>>.empty(growable: true);
   rows.add([
-    "DATETIME",
-    "TICK",
-    "CHECK_POINT",
-    "gyroscopeX",
-    "gyroscopeY",
-    "gyroscopeZ",
-    "accelerometerX",
-    "accelerometerY",
-    "accelerometerZ",
-    "magnetometerX",
-    "magnetometerY",
-    "magnetometerZ"
+    "DATE",
+    "TIME",
+    "SEC",
+    "RUNTIME",
+    "PTNUM",
+    "acceleration X",
+    "acceleration Y",
+    "acceleration Z",
+    "Geomagnetic X",
+    "Geomagnetic Y",
+    "Geomagnetic Z"
+    "gyro X",
+    "gyro Y",
+    "gyro Z",
   ]);
   for (var iter in valueList) {
     rows.add(iter.csvLineOutput());

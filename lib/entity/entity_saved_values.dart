@@ -1,4 +1,5 @@
 import 'package:imu_tester/entity/entity_sensor.dart';
+import 'package:intl/intl.dart';
 
 class SensorValue {
   SensorValue(SensorEntity entity, int check, int tick) {
@@ -57,7 +58,9 @@ class SensorValue {
 
   List<String> csvLineOutput() {
     return <String>[
-      "$_time",
+      (DateFormat("yyyyMMdd").format(_time)),
+      (DateFormat("HHmm").format(_time)),
+      "${_time.second}${_time.millisecond.toString().padLeft(3,"0")}",
       "$_tick",
       "$_check",
       "$_gyroscopeX",
