@@ -45,9 +45,8 @@ android {
         applicationId "com.waterlemon7z.imu_tester"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 25
-        //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 25
+        minSdkVersion 33
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

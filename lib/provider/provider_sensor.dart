@@ -7,7 +7,7 @@ import 'package:imu_tester/entity/entity_sensor.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class SensorProvider with ChangeNotifier {
-  final Duration _ignoreDuration = const Duration(milliseconds: 50);
+  final Duration _ignoreDuration = const Duration(milliseconds: 300);
   final Duration _sensorInterval = SensorInterval.fastestInterval;
 
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];

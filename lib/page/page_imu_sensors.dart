@@ -18,7 +18,7 @@ class IMUPage extends StatefulWidget {
 
 class IMUPageState extends State<IMUPage> {
   SensorEntity sensorData = SensorEntity();
-  String _sensorMode = "acc";
+  String _sensorMode = "Accelerometer";
   bool _chartVisibleAcc = true;
   bool _chartVisibleGyr = false;
   bool _chartVisibleMag = false;
@@ -50,12 +50,12 @@ class IMUPageState extends State<IMUPage> {
                     _chartVisibleMag = false;
                   });
                 }),
-                DataCell(Text(
-                    sensorData.gyroscopeEvent?.x.toStringAsFixed(6) ?? '?')),
-                DataCell(Text(
-                    sensorData.gyroscopeEvent?.y.toStringAsFixed(6) ?? '?')),
-                DataCell(Text(
-                    sensorData.gyroscopeEvent?.z.toStringAsFixed(6) ?? '?')),
+                DataCell(Text(sensorData.gyroscopeEvent?.x.toStringAsFixed(6) ??
+                    "0.000000")),
+                DataCell(Text(sensorData.gyroscopeEvent?.y.toStringAsFixed(6) ??
+                    "0.000000")),
+                DataCell(Text(sensorData.gyroscopeEvent?.z.toStringAsFixed(6) ??
+                    "0.000000")),
               ]),
               DataRow(cells: [
                 DataCell(const Text("Accel."), onTap: () {
@@ -68,13 +68,13 @@ class IMUPageState extends State<IMUPage> {
                 }),
                 DataCell(Text(
                     sensorData.accelerometerEvent?.x.toStringAsFixed(6) ??
-                        '?')),
+                        "0.000000")),
                 DataCell(Text(
                     sensorData.accelerometerEvent?.y.toStringAsFixed(6) ??
-                        '?')),
+                        "0.000000")),
                 DataCell(Text(
                     sensorData.accelerometerEvent?.z.toStringAsFixed(6) ??
-                        '?')),
+                        "0.000000")),
               ]),
               DataRow(cells: [
                 DataCell(const Text("Magnet."), onTap: () {
@@ -86,11 +86,14 @@ class IMUPageState extends State<IMUPage> {
                   });
                 }),
                 DataCell(Text(
-                    sensorData.magnetometerEvent?.x.toStringAsFixed(6) ?? '?')),
+                    sensorData.magnetometerEvent?.x.toStringAsFixed(6) ??
+                        "0.000000")),
                 DataCell(Text(
-                    sensorData.magnetometerEvent?.y.toStringAsFixed(6) ?? '?')),
+                    sensorData.magnetometerEvent?.y.toStringAsFixed(6) ??
+                        "0.000000")),
                 DataCell(Text(
-                    sensorData.magnetometerEvent?.z.toStringAsFixed(6) ?? '?')),
+                    sensorData.magnetometerEvent?.z.toStringAsFixed(6) ??
+                        "0.000000")),
               ]),
             ],
           ),
@@ -182,7 +185,7 @@ class IMUPageState extends State<IMUPage> {
                   onPressed: () async {
                     if (value.isRunning()) {
                       final directory = await getExternalStorageDirectory();
-                      String path = "${directory!.path}/${DateTime.now()}";
+                      String path = "${directory!.path}/${_fileOutput()}";
                       await csvOutput(value.getSensorValueList(), path);
                       value.stopRecord();
                       setState(() {
@@ -201,8 +204,9 @@ class IMUPageState extends State<IMUPage> {
                     if (value.isRunning()) {
                       value.increaseCheck();
                       showToast("Checked", true);
+                    } else {
+                      showToast("Not Started", true);
                     }
-                    showToast("Not Started", true);
                   },
                   child: const Text("Check"),
                 ),
@@ -210,8 +214,7 @@ class IMUPageState extends State<IMUPage> {
                   onPressed: () {
                     if (!value.isRunning()) {
                       changeFrequency(context, value);
-                    }
-                    else {
+                    } else {
                       showToast("plz stop to change", true);
                     }
                   },
@@ -227,7 +230,7 @@ class IMUPageState extends State<IMUPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                "StartTime: ${_startTime.hour}:${_startTime.minute.toString()}:${_startTime.second}",
+                "StartTime: ${_add0(_startTime.hour)}:${_add0(_startTime.minute)}:${_add0(_startTime.second)}",
                 style: const TextStyle(fontSize: 18),
               ),
               Text(
@@ -247,7 +250,21 @@ class IMUPageState extends State<IMUPage> {
       },
     );
   }
-
+  String _add0(int num)
+  {String rst;
+    if(num % 10 != num) {
+      rst = num.toString();
+    } else {
+      rst = "0$num";
+    }
+    return rst;
+  }
+String _fileOutput()
+{
+  DateTime cur = DateTime.now();
+  String rst = "${cur.year}-${_add0(cur.month)}-${_add0(cur.day)}T${_add0(cur.hour)}:${_add0(cur.minute)}:${_add0(cur.second)}.csv";
+  return rst;
+}
   Future<void> changeFrequency(
       BuildContext context, SensorProvider provider) async {
     final TextEditingController textFieldController = TextEditingController();
