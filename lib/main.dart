@@ -5,6 +5,7 @@ import 'package:imu_tester/provider/provider_pedometer.dart';
 import 'package:imu_tester/provider/provider_sensor.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:jnigen/jnigen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

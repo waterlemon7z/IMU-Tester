@@ -171,7 +171,7 @@ class IMUPageState extends State<IMUPage> {
                 if (!sensorProvider.isRunning()) {
                   sensorProvider.startRecord(pedometerProvider);
                   setState(() {
-                    _baseStep = pedometerProvider.steps;
+                    // _baseStep = pedometerProvider.steps;
                     _startTime = DateTime.now();
                   });
                 }
@@ -226,12 +226,17 @@ class IMUPageState extends State<IMUPage> {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(
-            "StepStatus: ${pedometerProvider.status}",
-            style: const TextStyle(fontSize: 18),
+
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _baseStep= sensorProvider.apiStepCounter.getStepCounter();
+              });
+            },
+            child: const Text("Check Steps"),
           ),
           Text(
-            "StepCount: ${pedometerProvider.steps - _baseStep}",
+            "StepCount: ${_baseStep}",
             style: const TextStyle(fontSize: 18),
           ),
         ],

@@ -1,0 +1,19 @@
+android_sdk_config:
+  add_gradle_deps: true
+  add_gradle_sources: true
+
+output:
+  c:
+    library_name: step_counter
+    path: src/step_counter/
+  dart:
+    path: lib/step_counter.dart
+    structure: single_file
+
+source_path:
+  - 'android/app/src/libs'
+classes:
+  - 'main.java.uk.ac.ox.eng.stepcounter.StepCounter' # from source_path
+exclude:
+  fields:
+    - 'android.os.Build\$VERSION_CODES#UPSIDE_DOWN_CAKE'

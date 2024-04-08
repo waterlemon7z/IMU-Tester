@@ -7,7 +7,11 @@ import 'package:imu_tester/entity/entity_sensor.dart';
 import 'package:imu_tester/provider/provider_pedometer.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
+import '../api/api_step_counter.dart';
+
 class SensorProvider with ChangeNotifier {
+  final ApiStepCounter apiStepCounter = ApiStepCounter();
+
   final Duration _ignoreDuration = const Duration(milliseconds: 100);
   final Duration _sensorInterval = SensorInterval.normalInterval;
 
@@ -50,7 +54,7 @@ class SensorProvider with ChangeNotifier {
     log("Start Recording");
     _timer = Timer.periodic(Duration(milliseconds: _frequency), (timer) {
       _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick, provider.steps - _baseStep));
-      // setState(() {});
+      apiStepCounter.addAccel(timer.tick, _sensorValueList.last.accelerometerX! , _sensorValueList.last.accelerometerY!, _sensorValueList.last.accelerometerZ!);
     });
   }
 
