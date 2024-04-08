@@ -23,6 +23,7 @@ Future<void> csvOutput(List<SensorValue> valueList, String path) async {
     "gyro X",
     "gyro Y",
     "gyro Z",
+    "Step Count"
   ]);
   for (var iter in valueList) {
     rows.add(iter.csvLineOutput());

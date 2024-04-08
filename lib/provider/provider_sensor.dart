@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:imu_tester/entity/entity_chart_data.dart';
 import 'package:imu_tester/entity/entity_saved_values.dart';
 import 'package:imu_tester/entity/entity_sensor.dart';
+import 'package:imu_tester/provider/provider_pedometer.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class SensorProvider with ChangeNotifier {
-  final Duration _ignoreDuration = const Duration(milliseconds: 300);
-  final Duration _sensorInterval = SensorInterval.fastestInterval;
+  final Duration _ignoreDuration = const Duration(milliseconds: 100);
+  final Duration _sensorInterval = SensorInterval.normalInterval;
 
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   final SensorEntity _sensorEntity = SensorEntity();
@@ -19,7 +20,7 @@ class SensorProvider with ChangeNotifier {
   Timer? _graphTimer;
   int _checkCount = 0;
   int _frequency = 1000;
-
+  int _baseStep = 0;
   SensorEntity getSensorData() {
     return _sensorEntity;
   }
@@ -43,11 +44,12 @@ class SensorProvider with ChangeNotifier {
   {
     return _frequency;
   }
-  void startRecord() {
+  void startRecord(PedometerProvider provider) {
     _checkCount = 0;
+    _baseStep = provider.steps;
     log("Start Recording");
     _timer = Timer.periodic(Duration(milliseconds: _frequency), (timer) {
-      _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick));
+      _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick, provider.steps - _baseStep));
       // setState(() {});
     });
   }

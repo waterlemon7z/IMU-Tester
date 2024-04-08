@@ -2,7 +2,7 @@ import 'package:imu_tester/entity/entity_sensor.dart';
 import 'package:intl/intl.dart';
 
 class SensorValue {
-  SensorValue(SensorEntity entity, int check, int tick) {
+  SensorValue(SensorEntity entity, int check, int tick, int steps) {
     _check = check;
     _tick = tick;
     _gyroscopeX = entity.gyroscopeEvent?.x ?? 0.0;
@@ -14,11 +14,13 @@ class SensorValue {
     _magnetometerX = entity.magnetometerEvent?.x ?? 0.0;
     _magnetometerY = entity.magnetometerEvent?.y ?? 0.0;
     _magnetometerZ = entity.magnetometerEvent?.z ?? 0.0;
+    _steps =steps;
   }
 
   final DateTime _time = DateTime.now();
   int? _check;
   int? _tick;
+  int? _steps;
   double? _gyroscopeX;
   double? _gyroscopeY;
   double? _gyroscopeZ;
@@ -71,7 +73,8 @@ class SensorValue {
       "$_accelerometerZ",
       "$_magnetometerX",
       "$_magnetometerY",
-      "$_magnetometerZ"
+      "$_magnetometerZ",
+      "$_steps",
     ];
   }
 // @override
