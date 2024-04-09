@@ -70,6 +70,6 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    implementation files('libs/StepCounterJava-all-1.0.jar')
-}
+//dependencies {
+//    implementation files('libs/StepCounterJava-all-1.0.jar')
+//}

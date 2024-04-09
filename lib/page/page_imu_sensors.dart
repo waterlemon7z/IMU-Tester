@@ -231,6 +231,7 @@ class IMUPageState extends State<IMUPage> {
             onPressed: () {
               setState(() {
                 _baseStep= sensorProvider.apiStepCounter.getStepCounter();
+                // sensorProvider.apiStepCounter.stepCounter.incSteps();
               });
             },
             child: const Text("Check Steps"),

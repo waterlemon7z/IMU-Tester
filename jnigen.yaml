@@ -1,6 +1,5 @@
 android_sdk_config:
   add_gradle_deps: true
-  add_gradle_sources: true
 
 output:
   c:
@@ -11,9 +10,9 @@ output:
     structure: single_file
 
 source_path:
-  - 'android/app/src/libs'
+  - 'android/app/src/main/java'
 classes:
-  - 'main.java.uk.ac.ox.eng.stepcounter.StepCounter' # from source_path
+  - 'uk.ac.ox.eng.stepcounter.StepCounter' # from source_path
 exclude:
   fields:
     - 'android.os.Build\$VERSION_CODES#UPSIDE_DOWN_CAKE'

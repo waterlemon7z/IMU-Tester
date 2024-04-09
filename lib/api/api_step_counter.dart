@@ -5,7 +5,7 @@ class ApiStepCounter
 {
   JObject activity = JObject.fromReference(Jni.getCurrentActivity());
   JObject context = JObject.fromReference(Jni.getCachedApplicationContext());
-    final stepCounter = StepCounter(1.0);
+    final stepCounter = StepCounter(0.1);
     ApiStepCounter()
     {
       stepCounter.start();
@@ -13,9 +13,12 @@ class ApiStepCounter
     void addAccel(int time, double x, double y, double z)
     {
 
-      JArray<jfloat> arr = [x, y, z] as JArray<jfloat>;
-      print('$x $y $z');
-    stepCounter.processSample(time, arr);
+      JArray<jfloat> arr = JArray<jfloat>(const jfloatType(),3);
+      arr[0] = x;
+      arr[1] = y;
+      arr[2] = z;
+      print('${arr[0]} ${arr[0]} ${arr[0]}');
+    stepCounter.processSample(DateTime.now().millisecondsSinceEpoch, arr);
     }
     int getStepCounter()
     {
