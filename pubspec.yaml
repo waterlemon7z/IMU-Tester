@@ -98,8 +98,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-ffigen:
-  output: 'oxford-step-counter.dart'
-  headers:
-    entry-points:
-      - 'example.h'
