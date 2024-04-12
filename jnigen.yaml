@@ -12,7 +12,18 @@ output:
 source_path:
   - 'android/app/src/main/java'
 classes:
+  - 'uk.ac.ox.eng.stepcounter.DataPoint' # from source_path
+  - 'uk.ac.ox.eng.stepcounter.DetectionStage' # from source_path
+  - 'uk.ac.ox.eng.stepcounter.FilterStage' # from source_path
+  - 'uk.ac.ox.eng.stepcounter.PostProcessStage' # from source_path
+  - 'uk.ac.ox.eng.stepcounter.PreProcessStage' # from source_path
+  - 'uk.ac.ox.eng.stepcounter.ScoringStage' # from source_path
   - 'uk.ac.ox.eng.stepcounter.StepCounter' # from source_path
 exclude:
   fields:
     - 'android.os.Build\$VERSION_CODES#UPSIDE_DOWN_CAKE'
+
+
+maven_downloads:
+  source_deps:
+    - 'com.amazonaws:aws-java-sdk-s3:1.12.400'

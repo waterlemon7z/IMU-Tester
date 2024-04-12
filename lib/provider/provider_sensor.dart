@@ -12,8 +12,8 @@ import '../api/api_step_counter.dart';
 class SensorProvider with ChangeNotifier {
   final ApiStepCounter apiStepCounter = ApiStepCounter();
 
-  final Duration _ignoreDuration = const Duration(milliseconds: 100);
-  final Duration _sensorInterval = SensorInterval.normalInterval;
+  final Duration _ignoreDuration = const Duration(milliseconds: 10);
+  final Duration _sensorInterval = SensorInterval.fastestInterval;
 
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   final SensorEntity _sensorEntity = SensorEntity();

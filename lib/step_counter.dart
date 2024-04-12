@@ -27,6 +27,597 @@ import "package:jni/jni.dart" as jni;
 final ffi.Pointer<T> Function<T extends ffi.NativeType>(String sym) jniLookup =
     ProtectedJniExtensions.initGeneratedLibrary("step_counter");
 
+/// from: uk.ac.ox.eng.stepcounter.DataPoint
+///
+/// Created by Jamie Brynes on 1/22/2017.
+class DataPoint extends jni.JObject {
+  @override
+  late final jni.JObjType<DataPoint> $type = type;
+
+  DataPoint.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $DataPointType();
+  static final _new0 = jniLookup<
+              ffi.NativeFunction<jni.JniResult Function(ffi.Int64, ffi.Float)>>(
+          "DataPoint__new0")
+      .asFunction<jni.JniResult Function(int, double)>();
+
+  /// from: public void <init>(long time, float magnitude)
+  /// The returned object must be released after use, by calling the [release] method.
+  factory DataPoint(
+    int time,
+    double magnitude,
+  ) {
+    return DataPoint.fromReference(_new0(time, magnitude).reference);
+  }
+
+  static final _new1 = jniLookup<
+              ffi.NativeFunction<jni.JniResult Function(ffi.Float, ffi.Float)>>(
+          "DataPoint__new1")
+      .asFunction<jni.JniResult Function(double, double)>();
+
+  /// from: public void <init>(float time, float magnitude)
+  /// The returned object must be released after use, by calling the [release] method.
+  factory DataPoint.new1(
+    double time,
+    double magnitude,
+  ) {
+    return DataPoint.fromReference(_new1(time, magnitude).reference);
+  }
+
+  static final _setEos = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(
+                  ffi.Pointer<ffi.Void>, ffi.Uint8)>>("DataPoint__setEos")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>, int)>();
+
+  /// from: public void setEos(boolean val)
+  void setEos(
+    bool val,
+  ) {
+    _setEos(reference.pointer, val ? 1 : 0).check();
+  }
+
+  static final _getEos = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "DataPoint__getEos")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public boolean getEos()
+  bool getEos() {
+    return _getEos(reference.pointer).boolean;
+  }
+
+  static final _getMagnitude = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "DataPoint__getMagnitude")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public float getMagnitude()
+  double getMagnitude() {
+    return _getMagnitude(reference.pointer).float;
+  }
+
+  static final _setMagnitude = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(
+                  ffi.Pointer<ffi.Void>, ffi.Float)>>("DataPoint__setMagnitude")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>, double)>();
+
+  /// from: public void setMagnitude(float magnitude)
+  void setMagnitude(
+    double magnitude,
+  ) {
+    _setMagnitude(reference.pointer, magnitude).check();
+  }
+
+  static final _getTime = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "DataPoint__getTime")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public float getTime()
+  double getTime() {
+    return _getTime(reference.pointer).float;
+  }
+
+  static final _setTime = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(
+                  ffi.Pointer<ffi.Void>, ffi.Float)>>("DataPoint__setTime")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>, double)>();
+
+  /// from: public void setTime(float time)
+  void setTime(
+    double time,
+  ) {
+    _setTime(reference.pointer, time).check();
+  }
+}
+
+final class $DataPointType extends jni.JObjType<DataPoint> {
+  const $DataPointType();
+
+  @override
+  String get signature => r"Luk/ac/ox/eng/stepcounter/DataPoint;";
+
+  @override
+  DataPoint fromReference(jni.JReference reference) =>
+      DataPoint.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($DataPointType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($DataPointType) && other is $DataPointType;
+  }
+}
+
+/// from: uk.ac.ox.eng.stepcounter.DetectionStage
+///
+/// Created by Jamie Brynes on 1/22/2017.
+class DetectionStage extends jni.JObject {
+  @override
+  late final jni.JObjType<DetectionStage> $type = type;
+
+  DetectionStage.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $DetectionStageType();
+  static final _new0 = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ffi.Void>)>>("DetectionStage__new0")
+      .asFunction<
+          jni.JniResult Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void <init>(java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> input, java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> output)
+  /// The returned object must be released after use, by calling the [release] method.
+  factory DetectionStage(
+    jni.JList<DataPoint> input,
+    jni.JList<DataPoint> output,
+  ) {
+    return DetectionStage.fromReference(
+        _new0(input.reference.pointer, output.reference.pointer).reference);
+  }
+
+  static final _run = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "DetectionStage__run")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void run()
+  void run() {
+    _run(reference.pointer).check();
+  }
+}
+
+final class $DetectionStageType extends jni.JObjType<DetectionStage> {
+  const $DetectionStageType();
+
+  @override
+  String get signature => r"Luk/ac/ox/eng/stepcounter/DetectionStage;";
+
+  @override
+  DetectionStage fromReference(jni.JReference reference) =>
+      DetectionStage.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($DetectionStageType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($DetectionStageType) &&
+        other is $DetectionStageType;
+  }
+}
+
+/// from: uk.ac.ox.eng.stepcounter.FilterStage
+///
+/// Created by Jamie Brynes on 1/22/2017.
+class FilterStage extends jni.JObject {
+  @override
+  late final jni.JObjType<FilterStage> $type = type;
+
+  FilterStage.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $FilterStageType();
+  static final _new0 = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ffi.Void>)>>("FilterStage__new0")
+      .asFunction<
+          jni.JniResult Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void <init>(java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> input, java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> output)
+  /// The returned object must be released after use, by calling the [release] method.
+  factory FilterStage(
+    jni.JList<DataPoint> input,
+    jni.JList<DataPoint> output,
+  ) {
+    return FilterStage.fromReference(
+        _new0(input.reference.pointer, output.reference.pointer).reference);
+  }
+
+  static final _run = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "FilterStage__run")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void run()
+  void run() {
+    _run(reference.pointer).check();
+  }
+}
+
+final class $FilterStageType extends jni.JObjType<FilterStage> {
+  const $FilterStageType();
+
+  @override
+  String get signature => r"Luk/ac/ox/eng/stepcounter/FilterStage;";
+
+  @override
+  FilterStage fromReference(jni.JReference reference) =>
+      FilterStage.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($FilterStageType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($FilterStageType) && other is $FilterStageType;
+  }
+}
+
+/// from: uk.ac.ox.eng.stepcounter.PostProcessStage
+///
+/// Created by Jamie Brynes on 1/22/2017.
+class PostProcessStage extends jni.JObject {
+  @override
+  late final jni.JObjType<PostProcessStage> $type = type;
+
+  PostProcessStage.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $PostProcessStageType();
+  static final _new0 = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ffi.Void>)>>("PostProcessStage__new0")
+      .asFunction<
+          jni.JniResult Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void <init>(java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> input, uk.ac.ox.eng.stepcounter.PostProcessStage.OnNewStepDetected newStepCallback, uk.ac.ox.eng.stepcounter.PostProcessStage.OnEndOfData endOfDataCallback)
+  /// The returned object must be released after use, by calling the [release] method.
+  factory PostProcessStage(
+    jni.JList<DataPoint> input,
+    PostProcessStage_OnNewStepDetected newStepCallback,
+    PostProcessStage_OnEndOfData endOfDataCallback,
+  ) {
+    return PostProcessStage.fromReference(_new0(
+            input.reference.pointer,
+            newStepCallback.reference.pointer,
+            endOfDataCallback.reference.pointer)
+        .reference);
+  }
+
+  static final _run = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "PostProcessStage__run")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void run()
+  void run() {
+    _run(reference.pointer).check();
+  }
+}
+
+final class $PostProcessStageType extends jni.JObjType<PostProcessStage> {
+  const $PostProcessStageType();
+
+  @override
+  String get signature => r"Luk/ac/ox/eng/stepcounter/PostProcessStage;";
+
+  @override
+  PostProcessStage fromReference(jni.JReference reference) =>
+      PostProcessStage.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($PostProcessStageType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($PostProcessStageType) &&
+        other is $PostProcessStageType;
+  }
+}
+
+/// from: uk.ac.ox.eng.stepcounter.PostProcessStage$OnEndOfData
+class PostProcessStage_OnEndOfData extends jni.JObject {
+  @override
+  late final jni.JObjType<PostProcessStage_OnEndOfData> $type = type;
+
+  PostProcessStage_OnEndOfData.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $PostProcessStage_OnEndOfDataType();
+  static final _EodCallback = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "PostProcessStage_OnEndOfData__EodCallback")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public abstract void EodCallback()
+  void EodCallback() {
+    _EodCallback(reference.pointer).check();
+  }
+}
+
+final class $PostProcessStage_OnEndOfDataType
+    extends jni.JObjType<PostProcessStage_OnEndOfData> {
+  const $PostProcessStage_OnEndOfDataType();
+
+  @override
+  String get signature =>
+      r"Luk/ac/ox/eng/stepcounter/PostProcessStage$OnEndOfData;";
+
+  @override
+  PostProcessStage_OnEndOfData fromReference(jni.JReference reference) =>
+      PostProcessStage_OnEndOfData.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($PostProcessStage_OnEndOfDataType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($PostProcessStage_OnEndOfDataType) &&
+        other is $PostProcessStage_OnEndOfDataType;
+  }
+}
+
+/// from: uk.ac.ox.eng.stepcounter.PostProcessStage$OnNewStepDetected
+class PostProcessStage_OnNewStepDetected extends jni.JObject {
+  @override
+  late final jni.JObjType<PostProcessStage_OnNewStepDetected> $type = type;
+
+  PostProcessStage_OnNewStepDetected.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $PostProcessStage_OnNewStepDetectedType();
+  static final _incrementSteps = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "PostProcessStage_OnNewStepDetected__incrementSteps")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public abstract void incrementSteps()
+  void incrementSteps() {
+    _incrementSteps(reference.pointer).check();
+  }
+}
+
+final class $PostProcessStage_OnNewStepDetectedType
+    extends jni.JObjType<PostProcessStage_OnNewStepDetected> {
+  const $PostProcessStage_OnNewStepDetectedType();
+
+  @override
+  String get signature =>
+      r"Luk/ac/ox/eng/stepcounter/PostProcessStage$OnNewStepDetected;";
+
+  @override
+  PostProcessStage_OnNewStepDetected fromReference(jni.JReference reference) =>
+      PostProcessStage_OnNewStepDetected.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($PostProcessStage_OnNewStepDetectedType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($PostProcessStage_OnNewStepDetectedType) &&
+        other is $PostProcessStage_OnNewStepDetectedType;
+  }
+}
+
+/// from: uk.ac.ox.eng.stepcounter.PreProcessStage
+///
+/// Created by Jamie Brynes on 1/22/2017.
+class PreProcessStage extends jni.JObject {
+  @override
+  late final jni.JObjType<PreProcessStage> $type = type;
+
+  PreProcessStage.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $PreProcessStageType();
+  static final _new0 = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ffi.Void>)>>("PreProcessStage__new0")
+      .asFunction<
+          jni.JniResult Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void <init>(java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> input, java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> output)
+  /// The returned object must be released after use, by calling the [release] method.
+  factory PreProcessStage(
+    jni.JList<DataPoint> input,
+    jni.JList<DataPoint> output,
+  ) {
+    return PreProcessStage.fromReference(
+        _new0(input.reference.pointer, output.reference.pointer).reference);
+  }
+
+  static final _run = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "PreProcessStage__run")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void run()
+  void run() {
+    _run(reference.pointer).check();
+  }
+}
+
+final class $PreProcessStageType extends jni.JObjType<PreProcessStage> {
+  const $PreProcessStageType();
+
+  @override
+  String get signature => r"Luk/ac/ox/eng/stepcounter/PreProcessStage;";
+
+  @override
+  PreProcessStage fromReference(jni.JReference reference) =>
+      PreProcessStage.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($PreProcessStageType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($PreProcessStageType) &&
+        other is $PreProcessStageType;
+  }
+}
+
+/// from: uk.ac.ox.eng.stepcounter.ScoringStage
+///
+/// Created by Jamie Brynes on 1/22/2017.
+class ScoringStage extends jni.JObject {
+  @override
+  late final jni.JObjType<ScoringStage> $type = type;
+
+  ScoringStage.fromReference(
+    jni.JReference reference,
+  ) : super.fromReference(reference);
+
+  /// The type which includes information such as the signature of this class.
+  static const type = $ScoringStageType();
+  static final _new0 = jniLookup<
+          ffi.NativeFunction<
+              jni.JniResult Function(ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ffi.Void>)>>("ScoringStage__new0")
+      .asFunction<
+          jni.JniResult Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void <init>(java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> input, java.util.List<uk.ac.ox.eng.stepcounter.DataPoint> output)
+  /// The returned object must be released after use, by calling the [release] method.
+  factory ScoringStage(
+    jni.JList<DataPoint> input,
+    jni.JList<DataPoint> output,
+  ) {
+    return ScoringStage.fromReference(
+        _new0(input.reference.pointer, output.reference.pointer).reference);
+  }
+
+  static final _run = jniLookup<
+              ffi
+              .NativeFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>>(
+          "ScoringStage__run")
+      .asFunction<jni.JniResult Function(ffi.Pointer<ffi.Void>)>();
+
+  /// from: public void run()
+  void run() {
+    _run(reference.pointer).check();
+  }
+}
+
+final class $ScoringStageType extends jni.JObjType<ScoringStage> {
+  const $ScoringStageType();
+
+  @override
+  String get signature => r"Luk/ac/ox/eng/stepcounter/ScoringStage;";
+
+  @override
+  ScoringStage fromReference(jni.JReference reference) =>
+      ScoringStage.fromReference(reference);
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => ($ScoringStageType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == ($ScoringStageType) &&
+        other is $ScoringStageType;
+  }
+}
+
 /// from: uk.ac.ox.eng.stepcounter.StepCounter
 ///
 /// Created by Jamie Brynes on 1/22/2017.

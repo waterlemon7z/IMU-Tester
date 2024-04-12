@@ -5,7 +5,7 @@ class ApiStepCounter
 {
   JObject activity = JObject.fromReference(Jni.getCurrentActivity());
   JObject context = JObject.fromReference(Jni.getCachedApplicationContext());
-    final stepCounter = StepCounter(0.1);
+    final stepCounter = StepCounter(0.01);
     ApiStepCounter()
     {
       stepCounter.start();
@@ -17,8 +17,8 @@ class ApiStepCounter
       arr[0] = x;
       arr[1] = y;
       arr[2] = z;
-      print('${arr[0]} ${arr[0]} ${arr[0]}');
-    stepCounter.processSample(DateTime.now().millisecondsSinceEpoch, arr);
+      print('${arr[0]} ${arr[1]} ${arr[2]}');
+    stepCounter.processSample(DateTime.now().millisecondsSinceEpoch*1000, arr);
     }
     int getStepCounter()
     {

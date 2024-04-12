@@ -9,7 +9,7 @@ class PedometerProvider with ChangeNotifier{
 
   PedometerProvider(BuildContext context)
   {
-     initPlatformState();
+     // initPlatformState();
   }
   /// Handle step count changed
   void onStepCount(StepCount event) {

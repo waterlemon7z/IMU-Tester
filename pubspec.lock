@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: args
-      sha256: eef6c46b622e0494a36c5a12d10d77fb4e855501a91c1b9ef9339326e58f0596
+      sha256: "7cf60b9f0cc88203c5a190b4cd62a99feea42759a7fa695010eb5de1c0b2252a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.2"
+    version: "2.5.0"
   async:
     dependency: transitive
     description:
@@ -185,7 +185,7 @@ packages:
     source: hosted
     version: "0.8.0"
   jnigen:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: jnigen
       sha256: "1f1c9e1eac8288ddf4e9bb29653761d0eb7c3a32aca31eba50627e42edf56a7a"
@@ -292,18 +292,18 @@ packages:
     dependency: "direct main"
     description:
       name: path_provider
-      sha256: b27217933eeeba8ff24845c34003b003b2b22151de3c908d0e679e8fe1aa078b
+      sha256: c9e7d3a4cd1410877472158bee69963a4579f78b68c65a2b7d40d1a7a88bb161
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   path_provider_android:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "477184d672607c0a3bf68fbbf601805f92ef79c82b64b4d6eb318cbca4c48668"
+      sha256: "51f0d2c554cfbc9d6a312ab35152fc77e2f0b758ce9f1a444a3a1e5b8f3c6b7f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.2"
+    version: "2.2.3"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -444,10 +444,10 @@ packages:
     dependency: "direct main"
     description:
       name: sensors_plus
-      sha256: "59a962b35e36abc799bab94974128f29877ca11610d0573f5aea73d1a5d4bd88"
+      sha256: "6898cd4490ffc27fea4de5976585e92fae55355175d46c6c3b3d719d42f9e230"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0"
+    version: "5.0.1"
   sensors_plus_platform_interface:
     dependency: transitive
     description:
@@ -497,18 +497,18 @@ packages:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_charts
-      sha256: a56dc10599392b33795f57cc85d0aa143950a5ea1992934f952e27635f3d1b84
+      sha256: d80656b44dfc24e42affae9e2ad0741c7480454ca414df7541c3def387299d27
       url: "https://pub.dev"
     source: hosted
-    version: "25.1.38"
+    version: "25.1.39+1"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "9fae07d8d1f1f66c61ad40cce8f85c02b8a3506ff0c3eae8ace0fd1d504b1ea5"
+      sha256: "159b125f55d95534c0c39a5efd644f50a310821191946e15eac50a49032fb42c"
       url: "https://pub.dev"
     source: hosted
-    version: "25.1.38"
+    version: "25.1.39"
   term_glyph:
     dependency: transitive
     description:
