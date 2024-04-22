@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:imu_tester/api/api_save_to_csv.dart';
 import 'package:imu_tester/entity/entity_sensor.dart';
 import 'package:imu_tester/page/imu_sensors/widget_realtime_chart.dart';
-import 'package:imu_tester/provider/provider_pedometer.dart';
 import 'package:imu_tester/provider/provider_sensor.dart';
 import 'package:imu_tester/widget/show_toast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,7 +28,6 @@ class IMUPageState extends State<IMUPage> {
 
   @override
   Widget build(BuildContext context) {
-    final pedometerProvider = Provider.of<PedometerProvider>(context);
     final sensorProvider = Provider.of<SensorProvider>(context);
     sensorData = sensorProvider.getSensorData();
     return Column(children: [
@@ -169,9 +167,9 @@ class IMUPageState extends State<IMUPage> {
               // style: ElevatedButton.styleFrom(backgroundColor: Colors.white, elevation: 0.0,),
               onPressed: () {
                 if (!sensorProvider.isRunning()) {
-                  sensorProvider.startRecord(pedometerProvider);
+                  sensorProvider.startRecord();
                   setState(() {
-                    _baseStep = pedometerProvider.steps;
+                    // _baseStep = pedometerProvider.steps;
                     _startTime = DateTime.now();
                   });
                 }
@@ -227,11 +225,11 @@ class IMUPageState extends State<IMUPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            "StepStatus: ${pedometerProvider.status}",
+            "StepStatus: x", ///TODO
             style: const TextStyle(fontSize: 18),
           ),
           Text(
-            "StepCount: ${pedometerProvider.steps - _baseStep}",
+            "StepCount: x",
             style: const TextStyle(fontSize: 18),
           ),
         ],

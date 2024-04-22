@@ -62,7 +62,7 @@ class SensorValue {
     return <String>[
       (DateFormat("yyyyMMdd").format(_time)),
       (DateFormat("HHmm").format(_time)),
-      "${_time.second.toString().padLeft(2,"0")}${_time.millisecond.toString().padLeft(3,"0")}",
+      "${_time.microsecondsSinceEpoch}00",
       "$_tick",
       "$_check",
       "$_gyroscopeX",
