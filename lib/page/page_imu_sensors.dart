@@ -190,8 +190,8 @@ class IMUPageState extends State<IMUPage> {
                 if (sensorProvider.isRunning()) {
                   final directory = await getExternalStorageDirectory();
                   String path = "${directory!.path}/${_fileOutput()}";
-                  await csvOutput(sensorProvider.getSensorValueList(), path);
                   sensorProvider.stopRecord();
+                  await csvOutput(sensorProvider.getSensorValueList(), path);
                   setState(() {
                     _fileSaved = "File Saved : $path";
                   });

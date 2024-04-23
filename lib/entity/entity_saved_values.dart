@@ -31,6 +31,10 @@ class SensorValue {
   double? _magnetometerY;
   double? _magnetometerZ;
 
+  set steps(int value) {
+    _steps = value;
+  }
+
   DateTime get time => _time;
 
   double? get gyroscopeX => _gyroscopeX;

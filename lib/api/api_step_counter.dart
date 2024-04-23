@@ -7,7 +7,7 @@ class StepCounter {
 
   int get steps => _steps;
 
-  void updateSteps(List<double> newValues) {
+  List<int> updateSteps(List<double> newValues) {
     int length = newValues.length;
     double sum = 0;
     newValues.forEach((element) {
@@ -36,5 +36,10 @@ class StepCounter {
     List<dynamic> peaks = findPeaks(Array(newValues), threshold: stdDev);
     Array rst = peaks[0];
     _steps += rst.length;
+    List<int> rtn = [];
+    rst.forEach((element) {
+      rtn.add(element.toInt());
+    });
+    return rtn;
   }
 }

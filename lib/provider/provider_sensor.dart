@@ -24,6 +24,7 @@ class SensorProvider with ChangeNotifier {
   Timer? _graphTimer;
   int _checkCount = 0;
   int _frequency = 10;
+  int _curLine = 0;
   final _stepStream = StreamController<int>();
 
   SensorEntity getSensorData() {
@@ -52,9 +53,11 @@ class SensorProvider with ChangeNotifier {
 
   void startRecord() {
     _checkCount = 0;
+    _curLine = 0;
     _stepCounter = StepCounter();
     // _baseStep = provider.steps;
     // developer.log("Start Recording");
+    _sensorValueList.removeRange(0, _sensorValueList.length);
     _mainTimer = Timer.periodic(Duration(milliseconds: _frequency), (timer) {
       _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick,
           0)); // provider.steps - _baseStep
@@ -66,7 +69,20 @@ class SensorProvider with ChangeNotifier {
       // setState(() {});
     });
     _stepTimer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      _stepCounter!.updateSteps(_stepCounterScalarInputList);
+      List<int> updateSteps = _stepCounter!.updateSteps(_stepCounterScalarInputList);
+      var size = _stepCounterScalarInputList.length;
+      int up = 0;
+      int cur = 0;
+      for(int i = 0; i < size; i++)
+        {
+          if(cur < updateSteps.length && updateSteps[cur] == i)
+            {
+              up++;
+              cur++;
+            }
+          _sensorValueList[_curLine + i].steps = _stepCounter!.steps - updateSteps.length + up;
+        }
+      _curLine += size;
       _stepCounterScalarInputList = [];
       _stepStream.add(_stepCounter!.steps);
       // _stepCounter!.steps;
@@ -84,11 +100,15 @@ class SensorProvider with ChangeNotifier {
     // log("Stop Recording");
     _mainTimer!.cancel();
     _stepTimer!.cancel();
-    // int indexNo = 0;
-    // for (var iter in _sensorValueList) {
-    //   log("[${indexNo++}]$iter");
-    // }
-    _sensorValueList.removeRange(0, _sensorValueList.length);
+
+    if(_stepCounterScalarInputList.isNotEmpty)
+      {
+        for(int i = 0; i < _stepCounterScalarInputList.length; i++)
+        {
+          _sensorValueList[_curLine + i].steps = _stepCounter!.steps;
+        }
+      }
+
   }
 
   StreamController<int> setStepStream()
