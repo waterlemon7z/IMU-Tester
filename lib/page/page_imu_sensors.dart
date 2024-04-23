@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -24,7 +25,8 @@ class IMUPageState extends State<IMUPage> {
   bool _chartVisibleMag = false;
   DateTime _startTime = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
   String _fileSaved = "";
-  int _baseStep = 0;
+  Stream<int>? _stepStream;
+  int _steps = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +170,13 @@ class IMUPageState extends State<IMUPage> {
               onPressed: () {
                 if (!sensorProvider.isRunning()) {
                   sensorProvider.startRecord();
+                  _stepStream =
+                      sensorProvider.setStepStream().stream.asBroadcastStream();
+                  _stepStream?.listen((event) {
+                    setState(() {
+                      _steps = event;
+                    });
+                  });
                   setState(() {
                     // _baseStep = pedometerProvider.steps;
                     _startTime = DateTime.now();
@@ -225,11 +234,7 @@ class IMUPageState extends State<IMUPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            "StepStatus: x", ///TODO
-            style: const TextStyle(fontSize: 18),
-          ),
-          Text(
-            "StepCount: x",
+            "StepCount: $_steps",
             style: const TextStyle(fontSize: 18),
           ),
         ],
