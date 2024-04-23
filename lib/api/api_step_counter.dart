@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:scidart/numdart.dart';
 import 'package:scidart/scidart.dart';
 
@@ -10,9 +9,9 @@ class StepCounter {
   List<int> updateSteps(List<double> newValues) {
     int length = newValues.length;
     double sum = 0;
-    newValues.forEach((element) {
+    for (var element in newValues) {
       sum += element;
-    });
+    }
     // 평균 계산
     double mean = sum / length;
 
@@ -20,9 +19,9 @@ class StepCounter {
       newValues[i] -= mean;
     }
     sum = 0;
-    newValues.forEach((element) {
+    for (var element in newValues) {
       sum += element;
-    });
+    }
     // 평균 계산
     mean = sum / length;
     // 분산 계산
@@ -37,9 +36,9 @@ class StepCounter {
     Array rst = peaks[0];
     _steps += rst.length;
     List<int> rtn = [];
-    rst.forEach((element) {
+    for (var element in rst) {
       rtn.add(element.toInt());
-    });
+    }
     return rtn;
   }
 }
