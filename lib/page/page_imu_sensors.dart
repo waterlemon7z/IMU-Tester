@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:imu_tester/api/api_save_to_csv.dart';
 import 'package:imu_tester/entity/entity_sensor.dart';
 import 'package:imu_tester/page/imu_sensors/widget_realtime_chart.dart';
-import 'package:imu_tester/provider/provider_pedometer.dart';
 import 'package:imu_tester/provider/provider_sensor.dart';
 import 'package:imu_tester/widget/show_toast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,11 +25,11 @@ class IMUPageState extends State<IMUPage> {
   bool _chartVisibleMag = false;
   DateTime _startTime = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
   String _fileSaved = "";
-  int _baseStep = 0;
+  Stream<int>? _stepStream;
+  int _steps = 0;
 
   @override
   Widget build(BuildContext context) {
-    final pedometerProvider = Provider.of<PedometerProvider>(context);
     final sensorProvider = Provider.of<SensorProvider>(context);
     sensorData = sensorProvider.getSensorData();
     return Column(children: [
@@ -169,9 +169,16 @@ class IMUPageState extends State<IMUPage> {
               // style: ElevatedButton.styleFrom(backgroundColor: Colors.white, elevation: 0.0,),
               onPressed: () {
                 if (!sensorProvider.isRunning()) {
-                  sensorProvider.startRecord(pedometerProvider);
+                  sensorProvider.startRecord();
+                  _stepStream =
+                      sensorProvider.setStepStream().stream.asBroadcastStream();
+                  _stepStream?.listen((event) {
+                    setState(() {
+                      _steps = event;
+                    });
+                  });
                   setState(() {
-                    _baseStep = pedometerProvider.steps;
+                    // _baseStep = pedometerProvider.steps;
                     _startTime = DateTime.now();
                   });
                 }
@@ -183,8 +190,8 @@ class IMUPageState extends State<IMUPage> {
                 if (sensorProvider.isRunning()) {
                   final directory = await getExternalStorageDirectory();
                   String path = "${directory!.path}/${_fileOutput()}";
-                  await csvOutput(sensorProvider.getSensorValueList(), path);
                   sensorProvider.stopRecord();
+                  await csvOutput(sensorProvider.getSensorValueList(), path);
                   setState(() {
                     _fileSaved = "File Saved : $path";
                   });
@@ -227,11 +234,7 @@ class IMUPageState extends State<IMUPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            "StepStatus: ${pedometerProvider.status}",
-            style: const TextStyle(fontSize: 18),
-          ),
-          Text(
-            "StepCount: ${pedometerProvider.steps - _baseStep}",
+            "StepCount: $_steps",
             style: const TextStyle(fontSize: 18),
           ),
         ],

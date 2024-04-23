@@ -19,7 +19,7 @@ Future<void> csvOutput(List<SensorValue> valueList, String path) async {
     "acceleration Z",
     "Geomagnetic X",
     "Geomagnetic Y",
-    "Geomagnetic Z"
+    "Geomagnetic Z",
     "gyro X",
     "gyro Y",
     "gyro Z",

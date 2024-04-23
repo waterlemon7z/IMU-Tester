@@ -1,26 +1,31 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:imu_tester/api/api_step_counter.dart';
 import 'package:imu_tester/entity/entity_chart_data.dart';
 import 'package:imu_tester/entity/entity_saved_values.dart';
 import 'package:imu_tester/entity/entity_sensor.dart';
-import 'package:imu_tester/provider/provider_pedometer.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class SensorProvider with ChangeNotifier {
-  final Duration _ignoreDuration = const Duration(milliseconds: 100);
-  final Duration _sensorInterval = SensorInterval.normalInterval;
+  final Duration _ignoreDuration = const Duration(milliseconds: 10);
+  final Duration _sensorInterval = SensorInterval.fastestInterval;
 
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   final SensorEntity _sensorEntity = SensorEntity();
+  StepCounter? _stepCounter;
   final List<SensorValue> _sensorValueList =
       List<SensorValue>.empty(growable: true);
+   List<double> _stepCounterScalarInputList = [];
   Map<String, List<ChartDataEntity>> flChartData = {};
-  Timer? _timer;
+  Timer? _mainTimer;
+  Timer? _stepTimer;
   Timer? _graphTimer;
   int _checkCount = 0;
-  int _frequency = 1000;
-  int _baseStep = 0;
+  int _frequency = 10;
+  int _curLine = 0;
+  final _stepStream = StreamController<int>();
+
   SensorEntity getSensorData() {
     return _sensorEntity;
   }
@@ -36,39 +41,78 @@ class SensorProvider with ChangeNotifier {
   int getCurCheck() {
     return _checkCount;
   }
-  void setFrequency(int val)
-  {
+
+  void setFrequency(int val) {
     _frequency = val;
   }
-  int getFrequency()
-  {
+
+  int getFrequency() {
     return _frequency;
   }
-  void startRecord(PedometerProvider provider) {
+
+  void startRecord() {
     _checkCount = 0;
-    _baseStep = provider.steps;
-    log("Start Recording");
-    _timer = Timer.periodic(Duration(milliseconds: _frequency), (timer) {
-      _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick, provider.steps - _baseStep));
+    _curLine = 0;
+    _stepCounter = StepCounter();
+    // _baseStep = provider.steps;
+    // developer.log("Start Recording");
+    _sensorValueList.removeRange(0, _sensorValueList.length);
+    _mainTimer = Timer.periodic(Duration(milliseconds: _frequency), (timer) {
+      _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick,
+          0)); // provider.steps - _baseStep
+
+      double x = _sensorEntity.accelerometerEvent?.x ?? 0.0;
+      double y = _sensorEntity.accelerometerEvent?.y ?? 0.0;
+      double z = _sensorEntity.accelerometerEvent?.z ?? 0.0;
+      _stepCounterScalarInputList.add(sqrt(x * x + y * y + z * z) );
       // setState(() {});
+    });
+    _stepTimer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+      List<int> updateSteps = _stepCounter!.updateSteps(_stepCounterScalarInputList);
+      var size = _stepCounterScalarInputList.length;
+      int up = 0;
+      int cur = 0;
+      for(int i = 0; i < size; i++)
+        {
+          if(cur < updateSteps.length && updateSteps[cur] == i)
+            {
+              up++;
+              cur++;
+            }
+          _sensorValueList[_curLine + i].steps = _stepCounter!.steps - updateSteps.length + up;
+        }
+      _curLine += size;
+      _stepCounterScalarInputList = [];
+      _stepStream.add(_stepCounter!.steps);
+      // _stepCounter!.steps;
     });
   }
 
-   bool isRunning()
-  {
-    if (_timer == null || !_timer!.isActive) {
+  bool isRunning() {
+    if (_mainTimer == null || !_mainTimer!.isActive) {
       return false;
     }
     return true;
   }
+
   void stopRecord() {
-    log("Stop Recording");
-    _timer!.cancel();
-    // int indexNo = 0;
-    // for (var iter in _sensorValueList) {
-    //   log("[${indexNo++}]$iter");
-    // }
-    _sensorValueList.removeRange(0, _sensorValueList.length);
+    // log("Stop Recording");
+    _mainTimer!.cancel();
+    _stepTimer!.cancel();
+
+    if(_stepCounterScalarInputList.isNotEmpty)
+      {
+        for(int i = 0; i < _stepCounterScalarInputList.length; i++)
+        {
+          _sensorValueList[_curLine + i].steps = _stepCounter!.steps;
+        }
+      }
+
+  }
+
+  StreamController<int> setStepStream()
+  {
+    return _stepStream;
   }
 
   @override
@@ -89,10 +133,9 @@ class SensorProvider with ChangeNotifier {
       "magY": List<ChartDataEntity>.empty(growable: true),
       "magZ": List<ChartDataEntity>.empty(growable: true),
     });
-    for(var iter in flChartData.values)
-      {
-        iter.add(ChartDataEntity(x: 1, y : 0));
-      }
+    for (var iter in flChartData.values) {
+      iter.add(ChartDataEntity(x: 1, y: 0));
+    }
     _streamSubscriptions.add(
       gyroscopeEventStream(samplingPeriod: _sensorInterval).listen(
         (GyroscopeEvent event) {

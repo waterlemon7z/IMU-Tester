@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:imu_tester/page/page_home.dart';
-import 'package:imu_tester/provider/provider_pedometer.dart';
 import 'package:imu_tester/provider/provider_sensor.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -35,9 +34,6 @@ class IMUTester extends StatelessWidget {
           ChangeNotifierProvider<SensorProvider>(
             create: (context) => SensorProvider(context),
           ),
-          ChangeNotifierProvider<PedometerProvider>(
-            create: (context) => PedometerProvider(context),
-          )
         ],
         child: const PageHome(),
       ),
