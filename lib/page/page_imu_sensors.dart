@@ -26,6 +26,7 @@ class IMUPageState extends State<IMUPage> {
   DateTime _startTime = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
   String _fileSaved = "";
   Stream<int>? _stepStream;
+  StreamSubscription<int>? _stepStreamSubscription;
   int _steps = 0;
 
   @override
@@ -170,17 +171,21 @@ class IMUPageState extends State<IMUPage> {
               onPressed: () {
                 if (!sensorProvider.isRunning()) {
                   sensorProvider.startRecord();
-                  _stepStream =
-                      sensorProvider.setStepStream().stream.asBroadcastStream();
-                  _stepStream?.listen((event) {
-                    setState(() {
-                      _steps = event;
+                  _stepStream ??= sensorProvider
+                        .setStepStream()
+                        .stream
+                        .asBroadcastStream();
+
+                  _stepStreamSubscription=_stepStream?.listen((event) {
+                      setState(() {
+                        _steps = event;
+                      });
                     });
-                  });
                   setState(() {
                     // _baseStep = pedometerProvider.steps;
                     _startTime = DateTime.now();
                   });
+                  showToast("Started", true);
                 }
               },
               child: const Text("Start"),
@@ -188,6 +193,7 @@ class IMUPageState extends State<IMUPage> {
             ElevatedButton(
               onPressed: () async {
                 if (sensorProvider.isRunning()) {
+                  _stepStreamSubscription!.cancel();
                   final directory = await getExternalStorageDirectory();
                   String path = "${directory!.path}/${_fileOutput()}";
                   sensorProvider.stopRecord();

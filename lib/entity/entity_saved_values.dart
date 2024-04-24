@@ -14,7 +14,12 @@ class SensorValue {
     _magnetometerX = entity.magnetometerEvent?.x ?? 0.0;
     _magnetometerY = entity.magnetometerEvent?.y ?? 0.0;
     _magnetometerZ = entity.magnetometerEvent?.z ?? 0.0;
+    _filteredData = 0;
     _steps =steps;
+  }
+
+  set filteredData(double value) {
+    _filteredData = value;
   }
 
   final DateTime _time = DateTime.now();
@@ -30,6 +35,7 @@ class SensorValue {
   double? _magnetometerX;
   double? _magnetometerY;
   double? _magnetometerZ;
+  double? _filteredData;
 
   set steps(int value) {
     _steps = value;
@@ -78,6 +84,7 @@ class SensorValue {
       "$_magnetometerX",
       "$_magnetometerY",
       "$_magnetometerZ",
+      "$_filteredData",
       "$_steps",
     ];
   }

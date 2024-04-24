@@ -14,7 +14,7 @@ class SensorProvider with ChangeNotifier {
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   final SensorEntity _sensorEntity = SensorEntity();
   StepCounter? _stepCounter;
-  final List<SensorValue> _sensorValueList =
+   List<SensorValue> _sensorValueList =
       List<SensorValue>.empty(growable: true);
    List<double> _stepCounterScalarInputList = [];
   Map<String, List<ChartDataEntity>> flChartData = {};
@@ -56,7 +56,8 @@ class SensorProvider with ChangeNotifier {
     _stepCounter = StepCounter();
     // _baseStep = provider.steps;
     // developer.log("Start Recording");
-    _sensorValueList.removeRange(0, _sensorValueList.length);
+    _sensorValueList = [];
+    _stepCounterScalarInputList = [];
     _mainTimer = Timer.periodic(Duration(milliseconds: _frequency), (timer) {
       _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick,
           0)); // provider.steps - _baseStep
@@ -64,11 +65,14 @@ class SensorProvider with ChangeNotifier {
       double x = _sensorEntity.accelerometerEvent?.x ?? 0.0;
       double y = _sensorEntity.accelerometerEvent?.y ?? 0.0;
       double z = _sensorEntity.accelerometerEvent?.z ?? 0.0;
-      _stepCounterScalarInputList.add(sqrt(x * x + y * y + z * z) );
+      // _stepCounterScalarInputList.add(sqrt(x * x + y * y + z * z) );
+      _stepCounterScalarInputList.add(z);
       // setState(() {});
     });
-    _stepTimer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      List<int> updateSteps = _stepCounter!.updateSteps(_stepCounterScalarInputList);
+    _stepTimer = Timer.periodic(const Duration(milliseconds: 2000), (timer) {
+      List<dynamic> filteredData = _stepCounter!.updateSteps(_stepCounterScalarInputList);
+      List<int> updateSteps = filteredData[0];
+      List<double> filtered = filteredData[1];
       var size = _stepCounterScalarInputList.length;
       int up = 0;
       int cur = 0;
@@ -80,6 +84,8 @@ class SensorProvider with ChangeNotifier {
               cur++;
             }
           _sensorValueList[_curLine + i].steps = _stepCounter!.steps - updateSteps.length + up;
+          _sensorValueList[_curLine + i].filteredData = filtered[i];
+
         }
       _curLine += size;
       _stepCounterScalarInputList = [];
@@ -99,7 +105,8 @@ class SensorProvider with ChangeNotifier {
     // log("Stop Recording");
     _mainTimer!.cancel();
     _stepTimer!.cancel();
-
+    _mainTimer = null;
+    _stepTimer = null;
     if(_stepCounterScalarInputList.isNotEmpty)
       {
         for(int i = 0; i < _stepCounterScalarInputList.length; i++)
