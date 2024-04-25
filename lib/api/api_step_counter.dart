@@ -37,7 +37,7 @@ class StepCounter {
     }else{_totalVari = newVariance;}
     _totalSize += length;
     var stdDev = sqrt(_totalVari);
-    stdDev = max(stdDev, 0.3);
+    stdDev = max(stdDev, 0.9);
 
     // Butterworth butterworth = Butterworth();
     // butterworth.lowPass(4, 250, 50);
@@ -82,7 +82,6 @@ class StepCounter {
       }
       result[i] = sum / count;
     }
-
     return result;
   }
 
@@ -94,4 +93,10 @@ class StepCounter {
     // 결합된 표준편차 계산
     return sqrt(combinedVariance);
   }
+}
+
+
+void main()
+{
+
 }

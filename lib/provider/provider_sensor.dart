@@ -115,6 +115,7 @@ class SensorProvider with ChangeNotifier {
         }
       }
 
+    _stepCounter = null;
   }
 
   StreamController<int> setStepStream()
