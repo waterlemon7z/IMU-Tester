@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:csv/csv.dart';
 import 'package:scidart/numdart.dart';
 import 'package:scidart/scidart.dart';
 
@@ -34,7 +37,9 @@ class StepCounter {
       var combinedVari =
           _combinedVariance(_totalVari, _totalSize, newVariance, length);
       _totalVari = combinedVari;
-    }else{_totalVari = newVariance;}
+    } else {
+      _totalVari = newVariance;
+    }
     _totalSize += length;
     var stdDev = sqrt(_totalVari);
     stdDev = max(stdDev, 0.9);
@@ -55,7 +60,7 @@ class StepCounter {
       peakIdx.add(element.toInt());
     }
     filteredVal = newValues;
-    return [peakIdx,filteredVal];
+    return [peakIdx, filteredVal];
   }
 
   List<double> _movingAverage(List<double> data, int kernelSize) {
@@ -95,8 +100,71 @@ class StepCounter {
   }
 }
 
+void main() {
+  for (int i = 1; i <= 30; i++) {
+    var file = File("datas/Test $i.csv");
+    // print(file.readAsStringSync());
+    var lines = file.readAsStringSync().split('\n');
+    lines.removeAt(0);
+    List<double> x = [];
+    List<double> y = [];
+    List<double> z = [];
+    List<double> filteredX = [];
+    List<double> filteredY = [];
+    List<double> filteredZ = [];
 
-void main()
-{
+    List<int> time = [];
+    for (var iter in lines) {
+      x.add(double.parse(iter.split(',')[5]));
+      y.add(double.parse(iter.split(',')[6]));
+      z.add(double.parse(iter.split(',')[7]));
+      time.add(int.parse(iter.split(',')[3]));
+    }
 
+    var stepCounter = StepCounter();
+    List<double> temp = [];
+    for (int i = 0; i < x.length; i++) {
+      temp.add(x[i]);
+      if (i % 50 == 0) {
+        filteredX.addAll(stepCounter.updateSteps(temp)[1]);
+        temp = [];
+      }
+    }
+    filteredX.addAll(stepCounter.updateSteps(temp)[1]);
+    temp = [];
+
+    for (int i = 0; i < x.length; i++) {
+      temp.add(y[i]);
+      if (i % 50 == 0) {
+        filteredY.addAll(stepCounter.updateSteps(temp)[1]);
+        temp = [];
+      }
+    }
+    filteredY.addAll(stepCounter.updateSteps(temp)[1]);
+    temp = [];
+
+    for (int i = 0; i < z.length; i++) {
+      temp.add(z[i]);
+      if (i % 50 == 0) {
+        filteredZ.addAll(stepCounter.updateSteps(temp)[1]);
+        temp = [];
+      }
+    }
+    filteredZ.addAll(stepCounter.updateSteps(temp)[1]);
+    temp = [];
+
+    List<List<String>> rows = List<List<String>>.empty(growable: true);
+    rows.add(["time", "filtered X", "filtered Y", "filtered Z"]);
+    for (int i = 0; i < x.length; i++) {
+      rows.add([
+        time[i].toString(),
+        filteredX[i].toString(),
+        filteredY[i].toString(),
+        filteredZ[i].toString()
+      ]);
+    }
+    String csv = const ListToCsvConverter().convert(rows);
+    file = File("datas/filteredData test $i.csv");
+    file.writeAsString(csv);
+  }
 }

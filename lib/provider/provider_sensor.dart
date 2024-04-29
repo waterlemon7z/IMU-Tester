@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:imu_tester/api/api_save_to_csv.dart';
 import 'package:imu_tester/api/api_step_counter.dart';
 import 'package:imu_tester/entity/entity_chart_data.dart';
 import 'package:imu_tester/entity/entity_saved_values.dart';
 import 'package:imu_tester/entity/entity_sensor.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class SensorProvider with ChangeNotifier {
@@ -25,9 +27,25 @@ class SensorProvider with ChangeNotifier {
   int _frequency = 10;
   int _curLine = 0;
   final _stepStream = StreamController<int>();
-
+  String _fileName = "";
+  CSVManager? _csvManager;
   SensorEntity getSensorData() {
     return _sensorEntity;
+  }
+  String _fileOutput() {
+    DateTime cur = DateTime.now();
+    String rst =
+        "${cur.year}-${_add0(cur.month)}-${_add0(cur.day)}T${_add0(cur.hour)}:${_add0(cur.minute)}:${_add0(cur.second)}.csv";
+    return rst;
+  }
+  String _add0(int num) {
+    String rst;
+    if (num % 10 != num) {
+      rst = num.toString();
+    } else {
+      rst = "0$num";
+    }
+    return rst;
   }
 
   List<SensorValue> getSensorValueList() {
@@ -50,18 +68,25 @@ class SensorProvider with ChangeNotifier {
     return _frequency;
   }
 
-  void startRecord() {
+  void startRecord() async {
     _checkCount = 0;
     _curLine = 0;
     _stepCounter = StepCounter();
     // _baseStep = provider.steps;
     // developer.log("Start Recording");
+    final directory = await getExternalStorageDirectory();
+    _fileName = _fileOutput();
+    _csvManager = CSVManager("${directory!.path}/${_fileName}");
     _sensorValueList = [];
     _stepCounterScalarInputList = [];
-    _mainTimer = Timer.periodic(Duration(milliseconds: _frequency), (timer) {
+    _mainTimer = Timer.periodic(Duration(milliseconds: _frequency), (timer) async{
       _sensorValueList.add(SensorValue(_sensorEntity, _checkCount, timer.tick,
           0)); // provider.steps - _baseStep
-
+      // if(_sensorValueList.length > 2000) // ~20000ms
+      //   {
+      //      _csvManager!.csvUpdate(_sensorValueList);
+      //     _sensorValueList.clear();
+      //   }
       double x = _sensorEntity.accelerometerEvent?.x ?? 0.0;
       double y = _sensorEntity.accelerometerEvent?.y ?? 0.0;
       double z = _sensorEntity.accelerometerEvent?.z ?? 0.0;
@@ -101,7 +126,7 @@ class SensorProvider with ChangeNotifier {
     return true;
   }
 
-  void stopRecord() {
+  void stopRecord() async {
     // log("Stop Recording");
     _mainTimer!.cancel();
     _stepTimer!.cancel();
@@ -115,7 +140,9 @@ class SensorProvider with ChangeNotifier {
         }
       }
 
+    await _csvManager!.csvUpdate(getSensorValueList());
     _stepCounter = null;
+    _csvManager = null;
   }
 
   StreamController<int> setStepStream()

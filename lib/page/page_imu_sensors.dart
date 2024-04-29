@@ -194,12 +194,10 @@ class IMUPageState extends State<IMUPage> {
               onPressed: () async {
                 if (sensorProvider.isRunning()) {
                   _stepStreamSubscription!.cancel();
-                  final directory = await getExternalStorageDirectory();
-                  String path = "${directory!.path}/${_fileOutput()}";
                   sensorProvider.stopRecord();
-                  await csvOutput(sensorProvider.getSensorValueList(), path);
+                  final directory = await getExternalStorageDirectory();
                   setState(() {
-                    _fileSaved = "File Saved : $path";
+                    _fileSaved = "File Saved";
                   });
                   showToast("Saved", true);
                 } else {
@@ -278,12 +276,7 @@ class IMUPageState extends State<IMUPage> {
     return rst;
   }
 
-  String _fileOutput() {
-    DateTime cur = DateTime.now();
-    String rst =
-        "${cur.year}-${_add0(cur.month)}-${_add0(cur.day)}T${_add0(cur.hour)}:${_add0(cur.minute)}:${_add0(cur.second)}.csv";
-    return rst;
-  }
+
 
   Future<void> changeFrequency(
       BuildContext context, SensorProvider provider) async {
